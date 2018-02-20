@@ -98,7 +98,47 @@ get_default <- function(text) {
   
 }
 
-# 
+# function get the word uniram frequancy  
+get_word <- function(text) 
+{
+  if (text != " ") 
+  { 
+    # call pars to unlist text
+    words <- parse_text(tolower(text))
+    # get list of words count
+    num_words <- length(words)
+    # Filter words
+    if (num_words > 0) 
+    {
+      # creat regualar expression start with each words
+      filter <- paste("^", words[num_words], sep = "")
+      # check unigrame frquancy 
+      tmp_dt <- unigram_dt[n0 %like% filter]
+      # get uni gram word frequancy
+      pred_word <- dim(tmp_dt)[1]
+      # if frequacy > 0
+      if (pred_word > 0) 
+      {
+        # sort words list decendingly
+        tmp_dt <- tmp_dt[order(rank(-freq))]
+        # get n0 of pred words
+        pred <- tmp_dt[1]$n0
+        if (num_words > 2) 
+        { 
+          tmp_w <- paste(words[1])
+          for (i in 2:(num_words - 1)) tmp_w <- paste(tmp_w, words[i])
+          return(paste(tmp_w, filter_text(pred)))
+        } 
+        else if (num_words > 1) 
+        {
+          tmp_w <- paste(words[1])
+          return(paste(tmp_w, filter_text(pred)))
+        }
+      }
+    }
+  }
+  return(text)
+}
 
 
 
