@@ -132,6 +132,78 @@ token.1 <- textcnt(clean.train, method = "string", split = "[[:space:]]", n = 1L
 token.2 <- textcnt(clean.train, method = "string", split = "[[:space:]]", n = 2L, decreasing = T)
 token.3 <- textcnt(clean.train, method = "string", split = "[[:space:]]", n = 3L, decreasing = T)
 
+# =====================
+# generate n-grams
+# ----------------
+## Uni-grams
+
+unigram.dt <- data.table(text = names(token.1), as.matrix(token.1))
+setnames(unigram.dt, "V1", "count")
+setnames(unigram.dt, "text", "n0")
+
+uni.count <- sum(unigram.dt$count)
+unigram.dt <- mutate(unigram.dt, freq = round(count/uni.count, 7))
+
+unigram.dt$count <- NULL
+setkeyv(unigram.dt, c("n0", "freq"))
+
+saveRDS(unigram.dt, "n-grams/unigram.rds")
+# free memory
+rm(uni.count, unigram.dt)
+
+# ----------------
+## Bi-grams
+
+bibase.dt <- data.table(text = names(token.2), as.matrix(token.2))
+setnames(bibase.dt, "V1", "count")
+bigram.dt <- bibase.dt
+
+bigram.dt[, c("n1", "n0")  := do.call(Map, c(f = c, strsplit(text, " ")))]
+bigram.dt <- mutate(bigram.dt, freq = round(count/base1[n1][[1]], 7))
+
+bigram.dt$text <- NULL
+bigram.dt$count <- NULL
+
+setkey(bigram.dt, n1)
+bigram.dt <- bigram.dt[,lapply(.SD, function(x) head(x, 5)), by = key(bigram.dt)]
+
+setkeyv(bigram.dt, c("n1", "freq", "n0"))
+saveRDS(bigram.dt, "n-grams/bigram.rds")
+# free memory
+rm(bibase.dt, token.1, bigram.dt)
+
+# ----------------
+## Tri-grams
+
+tribase.dt <- data.table(text = names(base3), as.matrix(base3))
+setnames(tribase.dt, "V1", "count")
+
+trigram.dt <- subset(tribase.dt, count > 1)
+trigram.dt[, c("n2", "n1", "n0")  := do.call(Map, c(f = c, strsplit(text, " ")))]
+trigram.dt <- mutate(trigram.dt, freq = round(count/base2[paste(n2, n1)][[1]], 7))
+
+trigram.dt$text <- NULL
+trigram.dt$count <- NULL
+
+setkeyv(trigram.dt, c("n2", "n1"))
+trigram.dt <- trigram.dt[,lapply(.SD, function(x) head(x, 5)),by = key(trigram.dt)]
+
+setkeyv(trigram.dt, c("n2", "n1", "freq", "n0"))
+saveRDS(trigram.dt, "n-grams/trigram.rds")
+
+# free memory
+rm(tribase.dt, token.2, token.3, trigram.dt)
+
+# ---------
+## Remove bad Words
+
+badwords <- readLines("http://badwordslist.googlecode.com/files/badwords.txt", warn = F)
+badwords <- tolower(badwords)
+badwords <- str_replace_all(badwords, "\\(", "\\\\(")
+# save as rds
+saveRDS(badwords, "n-grams/badwords.rds")
+rm(badwords) # free memory
+
 
 
 
