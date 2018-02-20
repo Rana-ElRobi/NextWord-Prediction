@@ -50,7 +50,7 @@ filter.text <- function(text) {
   # check entered text lenght
   if (length(curr.txt) > 0) {
     # parse text
-    words <- parse_text(curr.txt)
+    words <- parse.text(curr.txt)
     # get lenght
     num_words <- length(words)
     # search for matched bad word
