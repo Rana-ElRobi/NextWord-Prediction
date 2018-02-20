@@ -62,3 +62,45 @@ filter_text <- function(text) {
   return(curr.txt)
   }
 
+# Function that gets annotation
+get_default <- function(text) {
+  if (length(text) > 0) {
+    # Annotate words & sentence
+    words.sent.ann <- annotate(as.String(text), list(sent.token.annotator, word.token.annotator))
+    
+    # Get pos annotation
+    pos.ann <- annotate(as.String(text), pos.tag.annotator, words.sent.ann)
+    
+    # subset words
+    words.pos.ann <- subset(pos.ann, type == "word")
+    
+    # get tagges 
+    tags <- sapply(words.pos.ann$features, `[[`, "POS")
+    
+    # make return conitioning tree
+    if (tags %like% "NN") {return("in")} 
+    else if (tags %like% "VB") {return("a")} 
+    else if (tags %like% "JJ") {return("time")} 
+    else if (tags %like% "PRP") {return("first")} 
+    else if (tags %like% "CC") {return("i")} 
+    else if (text == "the") {return("first")}
+    
+  }else{return("the")}
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
