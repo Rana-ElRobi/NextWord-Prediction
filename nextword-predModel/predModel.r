@@ -14,7 +14,7 @@ word.token.annotator <- Maxent_Word_Token_Annotator()
 pos.tag.annotator <- Maxent_POS_Tag_Annotator()
 
 # Function that parse the text entered
-parse_text <- function(text) {
+parse.text <- function(text) {
   # unlist the text
   curr.text <- unlist(str_split(text, " "))
   # remove "" from list
@@ -23,7 +23,7 @@ parse_text <- function(text) {
 }
 
 # Function that clean text entered 
-clean_text <- function(text) {
+clean.text <- function(text) {
   input_str <- text %>% tolower %>%    
     str_replace_all("([iu]n)-([a-z])", "\\1\\2")%>%
     str_replace_all("([0-9])(st|nd|rd|th)", "\\1")%>%
@@ -44,7 +44,7 @@ clean_text <- function(text) {
 }
 
 # Function filter the words from bad words 
-filter_text <- function(text) {
+filter.text <- function(text) {
   # make copy as temporary var
   curr.txt <- text
   # check entered text lenght
@@ -72,7 +72,7 @@ filter_text <- function(text) {
   }
 
 # Function that gets annotation
-get_default <- function(text) {
+get.default <- function(text) {
   if (length(text) > 0) {
     # Annotate words & sentence
     words.sent.ann <- annotate(as.String(text), list(sent.token.annotator, word.token.annotator))
@@ -99,8 +99,7 @@ get_default <- function(text) {
 }
 
 # function get the word uniram frequancy  
-get_word <- function(text) 
-{
+get.word <- function(text) {
   if (text != " ") 
   { 
     # call pars to unlist text
@@ -113,7 +112,7 @@ get_word <- function(text)
       # creat regualar expression start with each words
       filter <- paste("^", words[num_words], sep = "")
       # check unigrame frquancy 
-      tmp_dt <- unigram_dt[n0 %like% filter]
+      tmp_dt <- unigram.dt[n0 %like% filter]
       # get uni gram word frequancy
       pred_word <- dim(tmp_dt)[1]
       # if frequacy > 0
@@ -140,8 +139,59 @@ get_word <- function(text)
   return(text)
 }
 
-
-
+# function predect the next word from entered text
+get.pred <- function(text) {
+  if (text != " ") 
+  { 
+    # lets first clean text entered
+    clean.input.text <- parse.text(clean.text(text))
+    len <- length(clean.input.text)
+    
+    # get 1st and last words
+    if (len > 1) {
+      word.1 <- clean.input.text[len]
+      word.2 <- clean.input.text[len - 1]
+    } else if (len > 0) {
+      word.1 <- clean.input.text[len]
+      word.2 <- "NA"
+    } else return("the")
+    
+    tri.len <- length(trigram.dt[trigram.dt[n2 == word.2 & n1 == word.1]]$freq)
+    bi.len <- length(bigram.dt[bigram.dt[n1 == word.1]]$freq)
+    matches <- matrix(nrow = tri.len + bi.len, ncol = 2)
+    matches[,1] <- ""
+    matches[,2] <- 0
+    
+    # set some propaplities for each n-grame
+    prop.1 <- .95 # for unigram
+    prop.2 <- .04 # for bi-grams
+    prop.3 <- .01 # for tri grams
+    
+    if (tri.len > 0) {
+      for (i in 1:tri.len) {
+        matches[i, 1] <- trigram.dt[trigram.dt[n2 == word.2 & n1 == word.1]]$n0[i]
+        cnt2 <- length(bigram.dt[bigram.dt[n1 == word.1 & n0 == matches[i, 1]]]$freq)
+        cnt1 <- length(unigram.dt[unigram.dt[n0 == matches[i, 1]]]$freq)
+        if (cnt2 > 0) freq2 <- bigram.dt[bigram.dt[n1 == word.1 & n0 == matches[i, 1]]]$freq else freq2 <- 0
+        if (cnt1 > 0) freq1 <- unigram.dt[unigram.dt[n0 == matches[i, 1]]]$freq else freq1 <- 0
+        matches[i, 2] <- trigram.dt[trigram.dt[n2 == word.2 & n1 == word.1]]$freq[i] * 
+          prop.1 + freq2 * prop.2 + freq1 * prop.3     
+      }
+    }
+    if (bi.len > 0) {
+      for (i in sum(tri.len, 1):sum(tri.len, bi.len)) {
+        matches[i, 1] <- bigram.dt[bigram.dt[n1 == word.1]]$n0[i - tri.len]
+        cnt1 <- length(unigram.dt[unigram.dt[n0 == matches[i, 1]]]$freq)
+        if (cnt1 > 0) freq1 <- unigram.dt[unigram.dt[n0 == matches[i, 1]]]$freq else freq1 <- 0
+        matches[i, 2] <- bigram.dt[bigram.dt[n1 == word.1]]$freq[i - tri.len] * prop.2 + freq1 * prop.3   
+      }
+    }
+    match_len <- length(matches[which.max(matches[,2])])
+    if (match_len > 0) return(matches[which.max(matches[,2])])
+    return(get.default(word.1))
+  }
+  return(" ")
+}
 
 
 
