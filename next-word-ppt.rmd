@@ -28,7 +28,7 @@ While using different propapilities for each n-gram had smooth effect of the dat
 
 Helps you to save more time while typing, it predicts the next word you may want to say.
 
-
+![shot](https://github.com/Rana-ElRobi/NextWord-Prediction/blob/master/app-shot.png)
 
 --- 
 
@@ -38,4 +38,4 @@ Here in the first textbox in the left (where Purple arrow sign), the user enter 
 
 While  the one on the right (where yellow arrow sign), the predected word will apprear
 
-
+![shot](https://github.com/Rana-ElRobi/NextWord-Prediction/blob/master/edited-shot.png)
