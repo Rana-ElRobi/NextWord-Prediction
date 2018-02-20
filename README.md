@@ -5,7 +5,7 @@ The goal of this exercise is to create a product to highlight the prediction alg
   - Shiny [NextWord App](https://rana-elrobi.shinyapps.io/nextword-predModel/)
 
 - A slide deck consisting of no more than 5 slides created with R Studio Presenter pitching your algorithm and app as if you were presenting to your boss or an investor.
-  - Rpubs [NextWord App ppt]() 
+  - Rpubs [NextWord App ppt](http://rpubs.com/Rana-ElRobi/next-word-ppt) 
 
 
 
