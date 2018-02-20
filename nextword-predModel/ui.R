@@ -17,14 +17,21 @@ shinyUI(fluidPage(
   
   # gives brief info about what the app is using for
   fluidRow(column(12,helpText("This Application helps you to save more time while typing, it predicts the next word you may want to say "))),
+  
   # input section for words the user gona enter 
-  mainPanel(
-    # Take input typing
-    helpText("Enter the words you want to Say in the next textbox "),
-    textInput("userWords",label="Input Area", value = "Type here ..."),
+  sidebarLayout(
+    sidebarPanel(
+      # Take input typing
+      helpText("Enter the words you want to Say in the next textbox "),
+      textInput("userWords",label="Input Area", value = " ")
+    ), # close sidebar panel
+    mainPanel(
+      # Show results
+      verbatimTextOutput("predWord") 
+    ), # close of main panel
     
-    # Show results
-    textOutput("predWord")
-    ) # close of main panel
+    position = c("left","right")
+  )
+ 
 
   ))# close of Shiny Page 
