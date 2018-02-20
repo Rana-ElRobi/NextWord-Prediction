@@ -15,28 +15,16 @@ shinyUI(fluidPage(
   # Application title
   titlePanel("Welcome To Next word Predection App"),
   
-  # gives brief info about what the app is using for 
-  headerPanel("This Application helps you to save more time while typing, it predicts the next word you may want to say "),
-  
-  
-  # Sidebar with a slider input for number of bins 
-  
-  sidebarLayout(
+  # gives brief info about what the app is using for
+  fluidRow(column(12,helpText("This Application helps you to save more time while typing, it predicts the next word you may want to say "))),
+  # input section for words the user gona enter 
+  mainPanel(
+    # Take input typing
+    helpText("Enter the words you want to Say in the next textbox "),
+    textInput("userWords",label="Input Area", value = "Type here ..."),
     
-    # input section for words the user gona enter 
-    sidebarPanel(
-      helpText("Enter the words you want to Say in the next textbox "),
-      textInput("userWords",label="Input Area", value = "Type here ..."),
-      sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
-    ),
-    
-    # Show a plot of the generated distribution
-    mainPanel(
-       plotOutput("distPlot")
-    )
-  )
-))
+    # Show results
+    textOutput("predWord")
+    ) # close of main panel
+
+  ))# close of Shiny Page 
