@@ -1,0 +1,41 @@
+---
+title: "Next Word Predection Project"
+author: "Rana El-Robi"
+date: "February 20, 2018"
+output:
+  slidy_presentation: default
+ioslides_presentation:
+  template: Presentation-plotly.html
+---
+
+# Project Introduction
+  SwiftKey company with Coursera "Data Science specialization team" proposed teh idea of this project for next word predection as final project of the specialization using the Corpus supported by SwiftKey. 
+
+---
+
+# Algorithm Used
+The main idea was building 3 diffrent N-gram models from cleaned "blogs,news,& tweets" english language data with added [bad words set from Google
+
+Then, get MaximumlikelihoodEstimation for each N-gram (uni,bi& tri-gram)
+
+Part-of speech tagging have a role to provide default prediction.
+While using different propapilities for each n-gram had smooth effect of the data. While unigram used to complet suggestet word
+
+---
+
+# Shiny App
+"Next word Predection App"
+
+Helps you to save more time while typing, it predicts the next word you may want to say.
+
+
+
+--- 
+
+# Using App
+
+Here in the first textbox in the left (where Purple arrow sign), the user enter the text he need to say
+
+While  the one on the right (where yellow arrow sign), the predected word will apprear
+
+

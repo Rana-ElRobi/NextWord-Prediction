@@ -1,0 +1,12 @@
+name: nextword-predModel
+title: nextword-predModel
+username:
+account: rana-elrobi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 285814
+bundleId: 1232246
+url: https://rana-elrobi.shinyapps.io/nextword-predModel/
+when: 1519158027.62576
+asMultiple: FALSE
+asStatic: FALSE

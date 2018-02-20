@@ -9,7 +9,7 @@ library(tau); library(data.table)
 
 # download & unzip data
 fileUrl <-"https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip"
-if (!file.exists("~/Desktop/Ds-Coursera/10-Capston-project/Coursera-SwiftKey.zip")){
+if (!file.exists("Coursera-SwiftKey.zip")){
   download.file(fileUrl, destfile = "Coursera-SwiftKey.zip")
   unzip("Coursera-SwiftKey.zip")
 }
@@ -25,9 +25,9 @@ if (!file.exists("~/Desktop/Ds-Coursera/10-Capston-project/Coursera-SwiftKey.zip
 
 
 # list of Names/urls for all english files
-en.list.files = c("~/Desktop/Ds-Coursera/10-Capston-project/final/en_US/en_US.blogs.txt",
-                  "~/Desktop/Ds-Coursera/10-Capston-project/final/en_US/en_US.news.txt",
-                  "~/Desktop/Ds-Coursera/10-Capston-project/final/en_US/en_US.twitter.txt")
+en.list.files = c("final/en_US/en_US.blogs.txt",
+                  "final/en_US/en_US.news.txt",
+                  "final/en_US/en_US.twitter.txt")
 
 # list of empty text vars for the 3 data sources
 en.text.data <- list(blogs = "", news = "", twitter = "")
