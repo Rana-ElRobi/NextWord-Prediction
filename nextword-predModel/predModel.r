@@ -13,6 +13,15 @@ sent.token.annotator <- Maxent_Sent_Token_Annotator()
 word.token.annotator <- Maxent_Word_Token_Annotator()
 pos.tag.annotator <- Maxent_POS_Tag_Annotator()
 
+# Function that parse the text entered
+parse_text <- function(text) {
+  # unlist the text
+  curr.text <- unlist(str_split(text, " "))
+  # remove "" from list
+  curr.text <- curr.text[curr.text != ""]
+  return(curr.text)
+}
+
 # Function that clean text entered 
 clean_text <- function(text) {
   input_str <- text %>% tolower %>%    
@@ -89,6 +98,7 @@ get_default <- function(text) {
   
 }
 
+# 
 
 
 
