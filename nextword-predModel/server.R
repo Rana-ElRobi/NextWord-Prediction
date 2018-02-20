@@ -8,10 +8,11 @@
 #
 
 library(shiny)
+#source("helpers.R")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
    
   output$predWord <- renderText({predWord <- input$userWords})
-  
+  #output$predWord <- renderText({ paste(filter_text(get_pred(input$input_str))) })
 })
