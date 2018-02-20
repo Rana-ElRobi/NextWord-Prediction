@@ -34,7 +34,31 @@ clean_text <- function(text) {
   return(input_str)
 }
 
-
-
-
+# Function filter the words from bad words 
+filter_text <- function(text) {
+  # make copy as temporary var
+  curr.txt <- text
+  # check entered text lenght
+  if (length(curr.txt) > 0) {
+    # parse text
+    words <- parse_text(curr.txt)
+    # get lenght
+    num_words <- length(words)
+    # search for matched bad word
+    if (num_words > 0) {
+      for (i in 1:num_words) {
+        if (words[i] %in% badwords) 
+          # replace with *** 
+          {words[i] <- paste(substring(words[i], 1, 1), "***", sep = "")}
+      }
+      curr.txt_w <- paste(words[1]) 
+      if (num_words > 1) {
+        for (i in 2:num_words) curr.txt_w <- paste(curr.txt_w, words[i])
+      }
+      # return filtered text
+      return(curr.txt_w)
+    }
+  }
+  return(curr.txt)
+  }
 
